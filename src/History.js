@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import moment from 'moment';
+
+import { getFastingTime } from './Utils';
 
 class History extends Component {
 
@@ -6,36 +9,15 @@ class History extends Component {
 
         var historyEntries = this.props.history.map((h) => {
 
-            var start = new Date(h.startedAt);
-            var end = new Date(h.endedAt);
+            var from = moment(h.startedAt.toString()).format("Do MMMM YYYY hh:mm");
+            var to = moment(h.endedAt.toString()).format("Do MMMM YYYY hh:mm");
 
-            // milliseconds
-            var diff = end.getTime() - start.getTime();
-
-            // seconds
-            var secs = Math.round(diff / 1000);
-
-            // minutes
-            var mins = secs / 60;
-
-            // hrs
-            var hrs = Math.round(mins / 60);
-            
-            // remaining mins after hrs
-            var remainingMins = Math.round(mins % 60);
-
-            var fastingFor = "";
-            if (hrs !== 0)
-                fastingFor += `${hrs}h `;
-            if (remainingMins !== 0)
-                fastingFor += `${remainingMins}m`;
-            if (hrs === 0 && remainingMins === 0)
-                fastingFor += `${secs}s`;
+            var fastingFor = getFastingTime(h.startedAt, h.endedAt);
 
             return (
-                <tr key={h.id}>
-                    <td>{ start.toString() }</td>
-                    <td>{ end.toString() }</td>
+                <tr key={ h.id }>
+                    <td>{ from }</td>
+                    <td>{ to }</td>
                     <td>{ fastingFor }</td>
                 </tr>
             );
@@ -51,14 +33,13 @@ class History extends Component {
                     <tbody>
                         { historyEntries.length > 0
                             ? historyEntries
-                            : <li>No records yet</li>
+                            : <tr><td colSpan={3}>No records</td></tr>
                         }
                     </tbody>
                 </table>
             </div>
         );
     }
-
 }
 
 export default History;
