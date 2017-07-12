@@ -14,8 +14,6 @@ class App extends Component {
 
         var localState = this.getLocalState();
 
-        console.log("local state", localState);
-
         if (localState) {
             this.state = {
                 currentGoal: localState.currentGoal,
