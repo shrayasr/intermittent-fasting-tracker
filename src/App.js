@@ -7,6 +7,10 @@ import Home from './Home';
 import History from './History';
 import { ID } from './Utils';
 
+import 'bulma/css/bulma.css';
+
+import { Container, Hero, Navbar, NavbarLink } from './Styles';
+
 class App extends Component {
 
     constructor(props) {
@@ -99,40 +103,40 @@ class App extends Component {
 
         return (
             <Router>
-                <div id="app">
-                    <h1>
-                        <Link to={"/"}>Intermittent Fasting Tracker</Link>
-                        { this.state.currentGoal && (
-                            <span> ({ this.state.currentGoal }:{ (24 - this.state.currentGoal )})</span>
-                        )}
-                        { this.state.isFasting && <span> *</span> }
-                    </h1>
-                    <hr/>
-                        <ul>
-                            <li><Link to={"/"}>Home</Link></li>
-                            <li><Link to={"/history"}>History</Link></li>
-                            <li><Link to={"/goals"}>Goals</Link></li>
-                        </ul>
-                    <hr/>
-                    <Route path="/goals" render={ () => (
-                        <Goals 
-                            currentGoal={ this.state.currentGoal }
-                            setGoal= { this.setGoal }
-                        />
-                    )} />
-                    <Route path="/history" render={ () => (
-                        <History
-                            history = { this.state.history }
-                        />
-                    )} />
-                    <Route exact={true} path="/" render={ () => (
-                        <Home
-                            isFasting = { this.state.isFasting }
-                            setStatus = { this.setStatus }
-                            fastingStartAt = { this.state.fastingStartAt }
-                        />
-                    )} />
-                </div>
+                <Container>
+                    <div id="app">
+                        <Hero>
+                            <Link to={"/"}>Intermittent Fasting Tracker</Link>
+                            { this.state.currentGoal && (
+                                <span> ({ this.state.currentGoal }:{ (24 - this.state.currentGoal )})</span>
+                            )}
+                            { this.state.isFasting && <span> *</span> }
+                        </Hero>
+                        <Navbar>
+                            <NavbarLink to={"/"}>Home</NavbarLink>
+                            <NavbarLink to={"/history"}>History</NavbarLink>
+                            <NavbarLink to={"/goals"}>Goals</NavbarLink>
+                        </Navbar>
+                        <Route path="/goals" render={ () => (
+                            <Goals 
+                                currentGoal={ this.state.currentGoal }
+                                setGoal= { this.setGoal }
+                            />
+                        )} />
+                        <Route path="/history" render={ () => (
+                            <History
+                                history = { this.state.history }
+                            />
+                        )} />
+                        <Route exact={true} path="/" render={ () => (
+                            <Home
+                                isFasting = { this.state.isFasting }
+                                setStatus = { this.setStatus }
+                                fastingStartAt = { this.state.fastingStartAt }
+                            />
+                        )} />
+                    </div>
+                </Container>
             </Router>
         );
     }
